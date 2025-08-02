@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #define t_std 500
+#define Regcode "IIUC95Auth"
 
 // Global Variable:
 int n , s;
@@ -10,6 +11,7 @@ char fname[100];
 char lname[100];
 char id[100];
 char pass[20];
+char regT[20];
 char file_id[100], file_pass[100];
 
 //Functions
@@ -18,6 +20,7 @@ void regis();
 void login();
 void OptT();
 void stdt();
+void regisT();
 
 //Structure
 struct student
@@ -274,7 +277,39 @@ void stdt(int i)
     }
 
 }
+void regisT()
+{
+    system("cls");
+    char chk[20];
+    int pck = 3;
+    strcpy(chk,Regcode);
 
+    printf("Welcome to Registration\n\n");
+    pc:
+    printf("Enter The 10 Digit Code Provided By the Authority to registration :\n");
+    fgets(regT, sizeof(regT), stdin);
+    regT[strcspn(regT, "\n")] = 0;
+    if(strcmp(regT,chk) == 0)
+    {
+        printf("Verification Successful\nNow You can Proceed\n");
+        
+    }
+    else{
+        pck--;
+        system("cls");
+        printf("You have %d chances\n",pck);
+        
+        
+        if(pck==0)
+        {
+            system("cls");
+            printf("You Have Been Blocked\nContract In 'ACAD' ");
+            return ;
+        }
+        goto pc;
+    }
+
+}
 
 // Main Function
 
@@ -283,7 +318,8 @@ int main()
     printf("**Press 1 for Registration(Student)**\n");
     printf("**Press 2 for Login(Student)**\n");
     printf("**Press 3 for Login(Teacher)**\n");
-    printf("**Press 4 for (Exit)**\n");
+    printf("**Press 4 for Registration(Teacher)**\n");
+    printf("**Press 5 for (Exit)**\n");
 
     struct student a[t_std];
     
@@ -308,6 +344,10 @@ int main()
         loginT();
     }
     if (n == 4)
+    {
+        regisT();
+    }
+    if (n == 5)
     {
         system("cls");
         printf("Exiting............");
