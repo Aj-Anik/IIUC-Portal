@@ -2,11 +2,15 @@
 #include <stdlib.h>
 #include <string.h>
 #define t_std 500
+// the regis code need for registration for the teachers
 #define Regcode "IIUC95Auth"
 
-// Global Variable:
-int n , s;
+// Global Variables:
+int n, s;
 int z;
+char Tid[100];
+char Tname[100];
+char Tpass[100];
 char fname[100];
 char lname[100];
 char id[100];
@@ -14,7 +18,7 @@ char pass[20];
 char regT[20];
 char file_id[100], file_pass[100];
 
-//Functions
+// Functions
 void class_check();
 void loginT();
 void regis();
@@ -24,8 +28,7 @@ void stdt();
 void regisT();
 void room_check();
 
-
-//Structure
+// Structure
 struct student
 {
     char fname[100];
@@ -34,7 +37,7 @@ struct student
     char pass[20];
 };
 
-// Function Shuru 
+// Function Shuru
 
 void regis()
 {
@@ -72,15 +75,14 @@ void regis()
 void login()
 {
     system("cls");
-    
+
     printf("----Welcome To IIUC Student Portal Login Page----\n\n");
-    here:
+here:
     printf("\n=== Login ===\n");
     printf("Enter username: ");
     scanf("%s", id);
     printf("Enter password: ");
     scanf("%s", pass);
-
 
     FILE *log;
     log = fopen("userinfo.txt", "r");
@@ -117,7 +119,7 @@ void loginT()
     system("cls");
     printf("----Welcome to Teacher's Login----\n\n");
     int T = 0;
-    here:
+here:
     printf("Enter username: ");
     scanf("%s", id);
     printf("Enter password: ");
@@ -157,6 +159,7 @@ void loginT()
 }
 void OptT()
 {
+    system("cls");
     FILE *not;
     if (not == NULL)
     {
@@ -164,66 +167,59 @@ void OptT()
     }
     int T1;
     char notice[100];
-    printf("1.Notice\n");
-    printf("2.Room Availability\n");
-    printf("3.Class Checker\n");
+    printf("1.Room Availability\n");
+    printf("2.Class Checker\n");
     scanf("%d", &T1);
-    if(T1 == 1)
+    if (T1 == 1)
     {
-        printf("Write a Short Notice \n\n");
-        gets(notice);
-        
-        not = fopen("notice.txt", "a");
-
-        fprintf(not, "%c", notice);
+        room_check();
     }
     if(T1 == 2)
     {
-        room_check();
+        class_check();
     }
 }
 void stdt(int i)
 {
-    
-    printf("\nWelcome %s\n",i);
+    system("cls");
+    printf("\nWelcome %s\n", i);
     printf("Section : 1BM \n");
     printf("Semester : 1st\n\n\n\n");
-    no:
+no:
     printf("1.Room Check\n");
-    printf("2.Registrated Subject\n");
-    printf("3.Notice[Teacher]\n");
-    printf("4.Teacher's List\n");
-    printf("5.Class Check\n");
-    
-    now:
+    printf("2.Class Check\n");
+    printf("3.Registrated Subject\n");
+    printf("4.Teacher's List\n\n");
+
     printf("Choose From 1-5 : ");
-    scanf("%d",&s);
-    if(s<1 || s > 5)
+    scanf("%d", &s);
+    if (s < 1 || s > 4)
     {
         system("cls");
         printf("Wrong Input .....\nTry Again\n");
-        goto now;
+        goto no;
     }
-    if(s == 1)
+    if (s == 1)
     {
         printf("Room Check :\n");
         room_check();
 
         printf("Press 1 to back\n");
-        T:
-        scanf("%d",&z);
-        if(z == 1)
+    T:
+        scanf("%d", &z);
+        if (z == 1)
         {
             system("cls");
             goto no;
         }
-        else{
+        else
+        {
             system("cls");
             printf("Invalid Input \nTry Again : ");
             goto T;
         }
     }
-    if(s == 2)
+    if (s == 3)
     {
         printf("   Credit Hour |Registrated Subjects:\n\n");
         printf("1.     3       |Computer Programming 1\n");
@@ -234,35 +230,21 @@ void stdt(int i)
         printf("6.     1       |Text of Ethics and Morality \n");
         printf("7.     3       |Mathematics I (Differential and Integral Calculus)\n");
         printf("8.     3       |Physics I (Mechanics, Waves, Heat and Thermodynamics)\n");
-        
+
         printf("Press 1 to back\n");
-        scanf("%d",&z);
-        if(z == 1)
+        scanf("%d", &z);
+        if (z == 1)
         {
             system("cls");
             goto no;
         }
-        else{
-            printf("Invalid Input \nTry Again : ");
-            goto T;
-        }
-    }
-    if(s == 3)
-    {
-        printf("Notice From Teacher : \n");
-        printf("Press 1 to back\n");
-        scanf("%d",&z);
-        if(z == 1)
+        else
         {
-            system("cls");
-            goto no;
-        }
-        else{
             printf("Invalid Input \nTry Again : ");
             goto T;
         }
     }
-    if(s == 4)
+    if (s == 4)
     {
         printf("Teacher's Info :\n\n\n");
         printf("Teacher's Name   |         Email Address     |  Phone Number\n\n");
@@ -272,59 +254,90 @@ void stdt(int i)
         printf("Kafil Uddin      | mdkafil_iiuc@gmail.com    |  01819101372\n");
         printf("Abdullah Al Mamun| mamun.phys@gmail.com      |  01521483685\n");
         printf("Press 1 to back\n");
-        scanf("%d",&z);
-        if(z == 1)
+        scanf("%d", &z);
+        if (z == 1)
         {
             system("cls");
             goto no;
         }
-        else{
-            printf("Invalid Input \nTry Again : %d",&z);
+        else
+        {
+            printf("Invalid Input \nTry Again : %d", &z);
             goto T;
         }
-        
     }
-    if(s==5)
+    if (s == 2)
     {
         class_check();
     }
-
 }
 void regisT()
 {
     system("cls");
     char chk[20];
     int pck = 3;
-    strcpy(chk,Regcode);
+    strcpy(chk, Regcode);
 
     printf("Welcome to Registration\n\n");
-    pc:
+pc:
     printf("Enter The 10 Digit Code Provided By the Authority to registration :\n");
     fgets(regT, sizeof(regT), stdin);
     regT[strcspn(regT, "\n")] = 0;
-    if(strcmp(regT,chk) == 0)
+    if (strcmp(regT, chk) == 0)
     {
         printf("Verification Successful\nNow You can Proceed\n");
+        system("cls");
+        printf("----Welcome To Teacher Registration Page----\n\n");
+        FILE *Tea;
         
+        printf("\n=== Registration ===\n");
+        printf("Enter Your Name\n");
+        fgets(Tname, sizeof(Tname), stdin);
+        Tname[strcspn(Tname,"\n")] = 0;
+        printf("Enter Your ID Name\n");
+        fgets(Tid, sizeof(Tid), stdin);
+        Tid[strcspn(Tid,"\n")] = 0;
+        printf("Enter Your Password \n");
+        fgets(Tpass, sizeof(Tpass), stdin);
+        Tpass[strcspn(Tpass,"\n")] = 0;
+
+        Tea = fopen("teacherinfo.txt", "a");
+        fprintf(Tea, "%s %s %s\n", Tname, Tid, Tpass);
+        fclose(Tea);
+        printf("\nRegistration successful!\n\n");
+        printf("Your Username : %s\n", Tid);
+        printf("Your Password : %s\n\n", Tpass);
+        logt:
+        printf("To Login press 2\n");
+        scanf("%d", &n);
+        if(n==2)
+        {
+            loginT();
+        }
+        else
+        {
+            printf("Try Again\n\n");
+            goto logt;
+        }
     }
-    else{
+    else
+    {
         pck--;
         system("cls");
-        printf("You have %d chances\n",pck);
-        
-        
-        if(pck==0)
+        printf("You have %d chances\n", pck);
+
+        if (pck == 0)
         {
             system("cls");
             printf("You Have Been Blocked\nContract In 'ACAD' ");
-            return ;
+            return;
         }
         goto pc;
     }
-
 }
 void room_check()
 {
+    system("cls");
     FILE *fp;
     char line[555];
     char room[50];
@@ -383,7 +396,6 @@ void room_check()
     {
         printf("\nInvalid period number. No such row in the file.\n");
     }
-
 }
 void class_check()
 {
@@ -440,8 +452,6 @@ void class_check()
     fclose(fp);
 }
 
-
-
 // Main Function
 
 int main()
@@ -453,15 +463,15 @@ int main()
     printf("**Press 5 for (Exit)**\n");
 
     struct student a[t_std];
-    
+
     FILE *log;
     if (log == 0)
     {
         fopen("userinfo.txt", "w");
     }
-    fflush(stdin); 
+    fflush(stdin);
     scanf("%d", &n);
-    getchar(); 
+    getchar();
     if (n == 1)
     {
         regis();
