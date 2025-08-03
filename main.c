@@ -174,7 +174,7 @@ void OptT()
     {
         room_check();
     }
-    if(T1 == 2)
+    if (T1 == 2)
     {
         class_check();
     }
@@ -289,17 +289,17 @@ pc:
         system("cls");
         printf("----Welcome To Teacher Registration Page----\n\n");
         FILE *Tea;
-        
+
         printf("\n=== Registration ===\n");
         printf("Enter Your Name\n");
         fgets(Tname, sizeof(Tname), stdin);
-        Tname[strcspn(Tname,"\n")] = 0;
+        Tname[strcspn(Tname, "\n")] = 0;
         printf("Enter Your ID Name\n");
         fgets(Tid, sizeof(Tid), stdin);
-        Tid[strcspn(Tid,"\n")] = 0;
+        Tid[strcspn(Tid, "\n")] = 0;
         printf("Enter Your Password \n");
         fgets(Tpass, sizeof(Tpass), stdin);
-        Tpass[strcspn(Tpass,"\n")] = 0;
+        Tpass[strcspn(Tpass, "\n")] = 0;
 
         Tea = fopen("teacherinfo.txt", "a");
         fprintf(Tea, "%s %s %s\n", Tname, Tid, Tpass);
@@ -307,10 +307,10 @@ pc:
         printf("\nRegistration successful!\n\n");
         printf("Your Username : %s\n", Tid);
         printf("Your Password : %s\n\n", Tpass);
-        logt:
+    logt:
         printf("To Login press 2\n");
         scanf("%d", &n);
-        if(n==2)
+        if (n == 2)
         {
             loginT();
         }
@@ -342,18 +342,57 @@ void room_check()
     char line[555];
     char room[50];
     int period;
+    int d;
 
     // Ask user input
+    printf("Enter Day (1-5)\n");
+    printf("1.Sat  2.Sun  3.Mon  4.Tues  5.Wed\n");
+    scanf("%d", &d);
     printf("Enter period number (1-6): ");
     scanf("%d", &period);
     printf("Enter room name (e.g., C105): ");
     scanf("%s", room);
 
-    // Open routine file
-    fp = fopen("routine.txt", "r");
-    if (!fp)
+    // Days
+    if (d == 1)
     {
-        printf("Could not open routine file.\n");
+        fp = fopen("saturday.txt", "r");
+        if (!fp)
+        {
+            printf("Could not open routine file.\n");
+        }
+    }
+    else if (d == 2)
+    {
+        fp = fopen("sunday.txt", "r");
+        if (!fp)
+        {
+            printf("Could not open routine file.\n");
+        }
+    }
+    else if (d == 3)
+    {
+        fp = fopen("monday.txt", "r");
+        if (!fp)
+        {
+            printf("Could not open routine file.\n");
+        }
+    }
+    else if (d == 4)
+    {
+        fp = fopen("tuesday.txt", "r");
+        if (!fp)
+        {
+            printf("Could not open routine file.\n");
+        }
+    }
+    else if (d == 5)
+    {
+        fp = fopen("wednesday.txt", "r");
+        if (!fp)
+        {
+            printf("Could not open routine file.\n");
+        }
     }
 
     // Skip header line
@@ -403,20 +442,58 @@ void class_check()
     char line[256];
     char section[10];
     int period;
+    int d;
 
     // Ask user for input
+    printf("Enter Day (1-5)\n");
+    printf("1.Sat  2.Sun  3.Mon  4.Tues  5.Wed\n");
+    scanf("%d", &d);
     printf("Enter your section (1AM/1BM/1CM): ");
     scanf("%s", section);
     printf("Enter period number (1-6): ");
     scanf("%d", &period);
 
-    // Open routine file
-    fp = fopen("routine.txt", "r");
-    if (!fp)
+    // Days
+    if (d == 1)
     {
-        printf("Could not open routine file.\n");
+        fp = fopen("saturday.txt", "r");
+        if (!fp)
+        {
+            printf("Could not open routine file.\n");
+        }
     }
-
+    else if (d == 2)
+    {
+        fp = fopen("sunday.txt", "r");
+        if (!fp)
+        {
+            printf("Could not open routine file.\n");
+        }
+    }
+    else if (d == 3)
+    {
+        fp = fopen("monday.txt", "r");
+        if (!fp)
+        {
+            printf("Could not open routine file.\n");
+        }
+    }
+    else if (d == 4)
+    {
+        fp = fopen("tuesday.txt", "r");
+        if (!fp)
+        {
+            printf("Could not open routine file.\n");
+        }
+    }
+    else if (d == 5)
+    {
+        fp = fopen("wednesday.txt", "r");
+        if (!fp)
+        {
+            printf("Could not open routine file.\n");
+        }
+    }
     // Read header (ignore first line)
     fgets(line, sizeof(line), fp);
 
