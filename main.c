@@ -180,15 +180,14 @@ void stdt(int i)
 {
     system("cls");
     printf("\nWelcome %s\n", i);
-    printf("Section : 1BM \n");
-    printf("Semester : 1st\n\n\n\n");
+    printf("Semester : 1st\n\n\n");
 no:
     printf("1.Room Check\n");
     printf("2.Class Check\n");
     printf("3.Registrated Subject\n");
     printf("4.Teacher's List\n\n");
 
-    printf("Choose From 1-5 : ");
+    printf("Choose From 1-4 : ");
     scanf("%d", &s);
     if (s < 1 || s > 4)
     {
@@ -530,6 +529,8 @@ void class_check()
 
 int main()
 {
+    system("cls");
+    printf("\033[1;32mINTERNATIONAL ISLAMIC UNIVERSITY CHITTAGONG\033[0m\n\n\n");
     printf("**Press 1 for Registration(Student)**\n");
     printf("**Press 2 for Login(Student)**\n");
     printf("**Press 3 for Login(Teacher)**\n");
