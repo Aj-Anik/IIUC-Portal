@@ -15,12 +15,15 @@ char regT[20];
 char file_id[100], file_pass[100];
 
 //Functions
+void class_check();
 void loginT();
 void regis();
 void login();
 void OptT();
 void stdt();
 void regisT();
+void room_check();
+
 
 //Structure
 struct student
@@ -162,8 +165,8 @@ void OptT()
     int T1;
     char notice[100];
     printf("1.Notice\n");
-    printf("2.Room Checker\n");
-    printf("3.Routine\n");
+    printf("2.Room Availability\n");
+    printf("3.Class Checker\n");
     scanf("%d", &T1);
     if(T1 == 1)
     {
@@ -174,6 +177,10 @@ void OptT()
 
         fprintf(not, "%c", notice);
     }
+    if(T1 == 2)
+    {
+        room_check();
+    }
 }
 void stdt(int i)
 {
@@ -182,10 +189,11 @@ void stdt(int i)
     printf("Section : 1BM \n");
     printf("Semester : 1st\n\n\n\n");
     no:
-    printf("1.Routine\n");
+    printf("1.Room Check\n");
     printf("2.Registrated Subject\n");
     printf("3.Notice[Teacher]\n");
     printf("4.Teacher's List\n");
+    printf("5.Class Check\n");
     
     now:
     printf("Choose From 1-5 : ");
@@ -198,7 +206,8 @@ void stdt(int i)
     }
     if(s == 1)
     {
-        printf("Routine:\n");
+        printf("Room Check :\n");
+        room_check();
 
         printf("Press 1 to back\n");
         T:
@@ -275,6 +284,10 @@ void stdt(int i)
         }
         
     }
+    if(s==5)
+    {
+        class_check();
+    }
 
 }
 void regisT()
@@ -310,6 +323,124 @@ void regisT()
     }
 
 }
+void room_check()
+{
+    FILE *fp;
+    char line[555];
+    char room[50];
+    int period;
+
+    // Ask user input
+    printf("Enter period number (1-6): ");
+    scanf("%d", &period);
+    printf("Enter room name (e.g., C105): ");
+    scanf("%s", room);
+
+    // Open routine file
+    fp = fopen("routine.txt", "r");
+    if (!fp)
+    {
+        printf("Could not open routine file.\n");
+    }
+
+    // Skip header line
+    fgets(line, sizeof(line), fp);
+
+    int current = 0, found = 0;
+    while (fgets(line, sizeof(line), fp))
+    {
+        current++;
+
+        // If we are at the requested period
+        if (current == period)
+        {
+            line[strcspn(line, "\n")] = 0; // Remove newline
+
+            // Split using semicolon
+            char *time = strtok(line, ";");
+            char *am = strtok(NULL, ";");
+            char *bm = strtok(NULL, ";");
+            char *cm = strtok(NULL, ";");
+
+            // Check if the room exists in this period
+            if ((am && strstr(am, room)) || (bm && strstr(bm, room)) || (cm && strstr(cm, room)))
+            {
+                printf("\nRoom %s is OCCUPIED in period %d.\n", room, period);
+                found = 1;
+            }
+            else
+            {
+                printf("\nRoom %s is EMPTY in period %d.\n", room, period);
+            }
+            break;
+        }
+    }
+
+    fclose(fp);
+
+    // Handle invalid period
+    if (current < period)
+    {
+        printf("\nInvalid period number. No such row in the file.\n");
+    }
+
+}
+void class_check()
+{
+    FILE *fp;
+    char line[256];
+    char section[10];
+    int period;
+
+    // Ask user for input
+    printf("Enter your section (1AM/1BM/1CM): ");
+    scanf("%s", section);
+    printf("Enter period number (1-6): ");
+    scanf("%d", &period);
+
+    // Open routine file
+    fp = fopen("routine.txt", "r");
+    if (!fp)
+    {
+        printf("Could not open routine file.\n");
+    }
+
+    // Read header (ignore first line)
+    fgets(line, sizeof(line), fp);
+
+    int current = 0;
+    while (fgets(line, sizeof(line), fp))
+    {
+        current++;
+        if (current == period)
+        {
+            // Remove newline
+            line[strcspn(line, "\n")] = 0;
+
+            // Split CSV line
+            char *token = strtok(line, ";");
+            char *time = token;
+            char *am = strtok(NULL, ";");
+            char *bm = strtok(NULL, ";");
+            char *cm = strtok(NULL, ";");
+
+            printf("\nTime: %s\n", time);
+            if (strcmp(section, "1AM") == 0)
+                printf("Class: %s\n", am);
+            else if (strcmp(section, "1BM") == 0)
+                printf("Class: %s\n", bm);
+            else if (strcmp(section, "1CM") == 0)
+                printf("Class: %s\n", cm);
+            else
+                printf("Invalid section!\n");
+            break;
+        }
+    }
+
+    fclose(fp);
+}
+
+
 
 // Main Function
 
