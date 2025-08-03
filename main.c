@@ -46,12 +46,9 @@ void regis()
     FILE *log;
 
     printf("\n=== Registration ===\n");
-    printf("Enter Your First Name\n");
+    printf("Enter Your Full Name\n");
     fgets(fname, sizeof(fname), stdin);
     fname[strcspn(fname, "\n")] = 0;
-    printf("Enter Your Last Name\n");
-    fgets(lname, sizeof(lname), stdin);
-    lname[strcspn(lname, "\n")] = 0;
     printf("Enter Your ID Name\n");
     fgets(id, sizeof(id), stdin);
     id[strcspn(id, "\n")] = 0;
@@ -60,7 +57,7 @@ void regis()
     pass[strcspn(pass, "\n")] = 0;
 
     log = fopen("userinfo.txt", "a");
-    fprintf(log, "%s %s %s %s\n", fname, lname, id, pass);
+    fprintf(log, "%s%s %s %s\n",fname , lname , id, pass);
     fclose(log);
     printf("\nRegistration successful!\n\n");
     printf("Your Username : %s\n", id);
