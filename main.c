@@ -18,6 +18,8 @@ char regT[20];
 char file_id[100], file_pass[100];
 
 // Functions
+void cgpa();
+float convertMarksToGPA(int marks);
 void class_check();
 void loginT();
 void regis();
@@ -26,6 +28,9 @@ void OptT();
 void stdt();
 void regisT();
 void room_check();
+
+
+
 
 // Structure
 struct student
@@ -36,7 +41,6 @@ struct student
 };
 
 // Function Shuru
-
 void regis()
 {
     system("cls");
@@ -48,15 +52,15 @@ void regis()
     fgets(fname, sizeof(fname), stdin);
     fname[strcspn(fname, "\n")] = 0;
     printf("Enter Your ID\n");
-     fgets(id, sizeof(id), stdin);
+    fgets(id, sizeof(id), stdin);
     id[strcspn(id, "\n")] = 0;
     printf("Enter Your Password \n");
-     fgets(pass, sizeof(pass), stdin);
+    fgets(pass, sizeof(pass), stdin);
     pass[strcspn(pass, "\n")] = 0;
 
     log = fopen("userinfo.txt", "a");
-    fprintf(log, "%s%s %s %s\n",id, pass);
-     fclose(log);
+    fprintf(log, "%s%s %s %s\n", id, pass);
+    fclose(log);
     printf("\nRegistration successful!\n\n");
     printf("Your Username : %s\n", id);
     printf("Your Password : %s\n\n", pass);
@@ -90,11 +94,11 @@ here:
     while (fscanf(log, "%s %s", file_id, file_pass) != EOF)
     {
         if (strcmp(id, file_id) == 0 && strcmp(pass, file_pass) == 0)
-             {
+        {
             found = 1;
-                break;
-             }
-                }
+            break;
+        }
+    }
     fclose(log);
     if (found)
     {
@@ -130,10 +134,10 @@ here:
     while (fscanf(ln, "%s %s", file_id, file_pass) != EOF)
     {
         if (strcmp(id, file_id) == 0 && strcmp(pass, file_pass) == 0)
-             {
+        {
             found = 1;
             break;
-           }
+        }
     }
     fclose(ln);
 
@@ -146,7 +150,7 @@ here:
     {
         printf("Login failed. Invalid username or password.\n");
         goto here;
-           }
+    }
     if (T == 1)
     {
         OptT();
@@ -159,15 +163,16 @@ void OptT()
     if (not == NULL)
     {
         not = fopen("notice.txt", "w");
-         }
-           int T1;
+    }
+    int T1;
     char notice[100];
-    yes:
+yes:
     printf("1.Room Availability\n");
     printf("2.Class Checker\n");
-     printf("Choose From 1-2 : ");
+    printf("3.LogOut\n");
+    printf("Choose From 1-3 : ");
     scanf("%d", &T1);
-    if (T1 < 1 || T1 > 2)
+    if (T1 < 1 || T1 > 3)
     {
         system("cls");
         printf("Wrong Input .....\nTry Again\n");
@@ -177,21 +182,20 @@ void OptT()
     {
         system("cls");
         room_check();
-         printf("Press 1 to back\n");
+        printf("Press 1 to back\n");
     P:
         scanf("%d", &z);
         if (z == 1)
-            {
+        {
             system("cls");
             goto yes;
-         }
+        }
         else
-            {
+        {
             system("cls");
             printf("Invalid Input \nTry Again : ");
             goto P;
-         }
-
+        }
     }
     if (T1 == 2)
     {
@@ -201,16 +205,19 @@ void OptT()
         printf("Press 1 to back\n");
         scanf("%d", &z);
         if (z == 1)
-            {
+        {
             system("cls");
             goto yes;
         }
         else
-                 {
+        {
             printf("Invalid Input \nTry Again : ");
             goto P;
-            }
-
+        }
+    }
+    if(T1 == 3)
+    {
+        main();
     }
 }
 void stdt(int i)
@@ -218,15 +225,17 @@ void stdt(int i)
     system("cls");
     printf("\nWelcome %s\n", i);
     printf("Semester : 1st\n\n\n");
-    no:
+no:
     printf("1.Room Check\n");
     printf("2.Class Check\n");
     printf("3.Registrated Subject\n");
-    printf("4.Teacher's List\n\n");
+    printf("4.Teacher's List\n");
+    printf("5.CGPA Calculator\n");
+    printf("6.LogOut\n\n");
 
-    printf("Choose From 1-4 : ");
+    printf("Choose From 1-6 : ");
     scanf("%d", &s);
-    if (s < 1 || s > 4)
+    if (s < 1 || s > 6)
     {
         system("cls");
         printf("Wrong Input .....\nTry Again\n");
@@ -264,7 +273,7 @@ void stdt(int i)
         printf("5.     2       |Advanced English\n");
         printf("6.     1       |Text of Ethics and Morality \n");
         printf("7.     3       |Mathematics I (Differential and Integral Calculus)\n");
-        printf("8.     3       |Physics I (Mechanics, Waves, Heat and Thermodynamics)\n");
+        printf("8.     3       |Physics I (Mechanics, Waves, Heat and Thermodynamics)\n\n");
 
         printf("Press 1 to back\n");
         scanf("%d", &z);
@@ -293,10 +302,10 @@ void stdt(int i)
         printf("Press 1 to back\n");
         scanf("%d", &z);
         if (z == 1)
-            {
+        {
             system("cls");
             goto no;
-         }
+        }
         else
         {
             printf("Invalid Input \nTry Again : %d", &z);
@@ -319,6 +328,27 @@ void stdt(int i)
             printf("Invalid Input \nTry Again : %d", &z);
             goto T;
         }
+    }
+    if(s == 5)
+    {
+        cgpa();
+        printf("Press 1 to back\n");
+        scanf("%d", &z);
+        if (z == 1)
+        {
+            system("cls");
+            goto no;
+        }
+        else
+        {
+            system("cls");
+            printf("Invalid Input \nTry Again : ");
+            goto T;
+        }
+    }
+    if(s == 6)
+    {
+        main();
 
     }
 }
@@ -330,7 +360,7 @@ void regisT()
     strcpy(chk, Regcode);
 
     printf("Welcome to Registration\n\n");
-    pc:
+pc:
     printf("Enter The 10 Digit Code Provided By the Authority to registration :\n");
     fgets(regT, sizeof(regT), stdin);
     regT[strcspn(regT, "\n")] = 0;
@@ -381,7 +411,7 @@ void regisT()
         {
             system("cls");
             printf("You Have Been Blocked\nContract In 'ACAD' ");
-             
+
             return;
         }
         goto pc;
@@ -391,7 +421,7 @@ void room_check()
 {
     system("cls");
     FILE *fp;
-     char line[555];
+    char line[555];
     char room[50];
     int period;
     int d;
@@ -399,7 +429,7 @@ void room_check()
     // Ask user input
     printf("Enter Day (1-5)\n");
     printf("1.Sat  2.Sun  3.Mon  4.Tues  5.Wed\n");
-     scanf("%d", &d);
+    scanf("%d", &d);
     printf("Enter period number (1-6): ");
     scanf("%d", &period);
     printf("Enter room name (e.g., C105): ");
@@ -445,7 +475,7 @@ void room_check()
         {
             printf("Could not open routine file.\n");
         }
-         }
+    }
 
     // Skip header line
     fgets(line, sizeof(line), fp);
@@ -491,7 +521,7 @@ void room_check()
 void class_check()
 {
     FILE *fp;
-     char line[256];
+    char line[256];
     char section[10];
     int period;
     int d;
@@ -546,7 +576,7 @@ void class_check()
             printf("Could not open routine file.\n");
         }
     }
-     // Read header (ignore first line)
+    // Read header (ignore first line)
     fgets(line, sizeof(line), fp);
 
     int current = 0;
@@ -579,6 +609,66 @@ void class_check()
     }
 
     fclose(fp);
+}
+float convertMarksToGPA(int marks) {
+    if (marks >= 80) return 4.0;
+    else if (marks >= 75) return 3.75;
+    else if (marks >= 70) return 3.5;
+    else if (marks >= 65) return 3.25;
+    else if (marks >= 60) return 3.0;
+    else if (marks >= 55) return 2.75;
+    else if (marks >= 50) return 2.5;
+    else if (marks >= 45) return 2.25;
+    else if (marks >= 40) return 2.0;
+    else return 0.0;
+}
+void cgpa()
+{
+    system("cls");
+    int n;
+    printf("Enter the number of subjects: ");
+    scanf("%d", &n);
+    getchar();
+
+    char subjectName[n][50];
+    float  marks[n];
+    float gpa[n],credits[n];
+
+    float totalPoints = 0.0, totalCredits = 0.0;
+
+    for (int i = 0; i < n; i++) {
+        printf("\nSubject %d:\n", i + 1);
+
+        printf("Subject Name: ");
+        fgets(subjectName[i], sizeof(subjectName[i]), stdin);
+        subjectName[i][strcspn(subjectName[i], "\n")] = '\0';
+
+        printf("Enter credit for %s: ", subjectName[i]);
+        scanf("%f", &credits[i]);
+
+        printf("Enter marks for %s: ", subjectName[i]);
+        scanf("%f", &marks[i]);
+        getchar(); 
+
+        gpa[i] = convertMarksToGPA(marks[i]);
+
+        totalPoints += gpa[i] * credits[i];
+        totalCredits += credits[i];
+    }
+
+    float cgpa = totalPoints / totalCredits;
+
+    system("cls");
+    printf("\n===== Result Summary =====\n");
+    for (int i = 0; i < n; i++) {
+        printf("Subject: %-20s | Credit: %.1f | Marks: %.0f | GPA: %.2f\n",
+               subjectName[i], credits[i], marks[i], gpa[i]);
+    }
+
+    printf("\nTotal Credits: %.2f", totalCredits);
+    printf("\nTotal Grade Points: %.2f", totalPoints);
+    printf("\nCGPA: %.2f\n\n", cgpa);
+    
 }
 
 // Main Function
@@ -624,7 +714,7 @@ int main()
         system("cls");
         printf("Exiting............");
         return 0;
-         }
+    }
 
     return 0;
 }
