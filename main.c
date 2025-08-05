@@ -359,6 +359,7 @@ no:
     }
     if (s == 6)
     {
+        system("cls");
         FILE *check;
         check = fopen("weeklymarks.txt", "r");
         if (check == NULL) {
@@ -725,6 +726,10 @@ void stmarks()
         return;
     }
     getchar(); // Clear input buffer
+    char date[100];
+    printf("Enter Date(MM-DD-YY): ");
+    fgets(date, sizeof(date), stdin);
+    date[strcspn(date, "\n")] = 0;
     printf("Enter The Subject Name: ");
     fgets(sub, sizeof(sub), stdin);
     sub[strcspn(sub, "\n")] = 0;
@@ -732,20 +737,20 @@ void stmarks()
     printf("\nEnter The Total Present Students: ");
     scanf("%d", &S);
     getchar(); // Clear input buffer
-    fprintf(mark, "EXAM NAME : %s,  Student(Participated): %d\n\n", sub, S);
+    fprintf(mark, "EXAM DATE : %s \nEXAM NAME : %s   Student(Participated): %d\n\n",date, sub, S);
     int arr[S];
     for (int i = 0; i < S; i++)
     {
         char studentid[10];
         int marks;
-        printf("Enter Student %d Name: ", i + 1);
+        printf("Enter Student %d ID: ", i + 1);
         fgets(studentid, sizeof(studentid), stdin);
         studentid[strcspn(studentid, "\n")] = 0;
         printf("Enter marks for %s: ", studentid);
         scanf("%d", &marks);
         getchar(); // Clear input buffer
         arr[i] = marks;
-        fprintf(mark, "Student: %s, Marks: %d\n", studentid, marks);
+        fprintf(mark, "Student: %s, Marks: %d\n\n\n", studentid, marks);
     }
     fclose(mark);
     printf("\nWeekly test marks recorded successfully!\n");
