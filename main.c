@@ -8,6 +8,7 @@
 // Global Variables:
 int n, s;
 int z;
+char sub[100];
 char Tid[100];
 char Tname[100];
 char Tpass[100];
@@ -18,6 +19,8 @@ char regT[20];
 char file_id[100], file_pass[100];
 
 // Functions
+
+void stmarks();
 void cgpa();
 float convertMarksToGPA(int marks);
 void class_check();
@@ -29,9 +32,6 @@ void stdt();
 void regisT();
 void room_check();
 
-
-
-
 // Structure
 struct student
 {
@@ -41,6 +41,7 @@ struct student
 };
 
 // Function Shuru
+
 void regis()
 {
     system("cls");
@@ -59,7 +60,7 @@ void regis()
     pass[strcspn(pass, "\n")] = 0;
 
     log = fopen("userinfo.txt", "a");
-    fprintf(log, "%s%s %s %s\n", id, pass);
+    fprintf(log, "%s %s\n", id, pass);
     fclose(log);
     printf("\nRegistration successful!\n\n");
     printf("Your Username : %s\n", id);
@@ -169,10 +170,11 @@ void OptT()
 yes:
     printf("1.Room Availability\n");
     printf("2.Class Checker\n");
-    printf("3.LogOut\n");
+    printf("3.Weekly Test Marks\n");
+    printf("4.LogOut\n");
     printf("Choose From 1-3 : ");
     scanf("%d", &T1);
-    if (T1 < 1 || T1 > 3)
+    if (T1 < 1 || T1 > 4)
     {
         system("cls");
         printf("Wrong Input .....\nTry Again\n");
@@ -215,9 +217,13 @@ yes:
             goto P;
         }
     }
-    if(T1 == 3)
+    if (T1 == 4)
     {
         main();
+    }
+    if (T1 == 3)
+    {
+        stmarks();
     }
 }
 void stdt(int i)
@@ -231,11 +237,12 @@ no:
     printf("3.Registrated Subject\n");
     printf("4.Teacher's List\n");
     printf("5.CGPA Calculator\n");
-    printf("6.LogOut\n\n");
+    printf("6.Weekly Result\n");
+    printf("7.LogOut\n\n");
 
-    printf("Choose From 1-6 : ");
+    printf("Choose From 1-7 : ");
     scanf("%d", &s);
-    if (s < 1 || s > 6)
+    if (s < 1 || s > 7)
     {
         system("cls");
         printf("Wrong Input .....\nTry Again\n");
@@ -329,7 +336,7 @@ no:
             goto T;
         }
     }
-    if(s == 5)
+    if (s == 5)
     {
         cgpa();
         printf("Press 1 to back\n");
@@ -346,10 +353,35 @@ no:
             goto T;
         }
     }
-    if(s == 6)
+    if (s == 7)
     {
         main();
-
+    }
+    if (s == 6)
+    {
+        FILE *check;
+        check = fopen("weeklymarks.txt", "r");
+        if (check == NULL) {
+            printf("No weekly marks recorded yet.\n");
+        } else {
+            char line[256];
+            printf("\n--- Weekly Test Marks ---\n\n");
+            while (fgets(line, sizeof(line), check)) {
+                printf("%s", line);
+            }
+            fclose(check);
+        }
+        printf("\nPress 1 to back\n");
+        scanf("%d", &z);
+        if (z == 1) {
+            system("cls");
+            goto no;
+        } else {
+            system("cls");
+            printf("Invalid Input \nTry Again : ");
+            goto T;
+        }
+        
     }
 }
 void regisT()
@@ -610,17 +642,28 @@ void class_check()
 
     fclose(fp);
 }
-float convertMarksToGPA(int marks) {
-    if (marks >= 80) return 4.0;
-    else if (marks >= 75) return 3.75;
-    else if (marks >= 70) return 3.5;
-    else if (marks >= 65) return 3.25;
-    else if (marks >= 60) return 3.0;
-    else if (marks >= 55) return 2.75;
-    else if (marks >= 50) return 2.5;
-    else if (marks >= 45) return 2.25;
-    else if (marks >= 40) return 2.0;
-    else return 0.0;
+float convertMarksToGPA(int marks)
+{
+    if (marks >= 80)
+        return 4.0;
+    else if (marks >= 75)
+        return 3.75;
+    else if (marks >= 70)
+        return 3.5;
+    else if (marks >= 65)
+        return 3.25;
+    else if (marks >= 60)
+        return 3.0;
+    else if (marks >= 55)
+        return 2.75;
+    else if (marks >= 50)
+        return 2.5;
+    else if (marks >= 45)
+        return 2.25;
+    else if (marks >= 40)
+        return 2.0;
+    else
+        return 0.0;
 }
 void cgpa()
 {
@@ -628,15 +671,15 @@ void cgpa()
     int n;
     printf("Enter the number of subjects: ");
     scanf("%d", &n);
-    getchar();
 
     char subjectName[n][50];
-    float  marks[n];
-    float gpa[n],credits[n];
+    float marks[n];
+    float gpa[n], credits[n];
 
     float totalPoints = 0.0, totalCredits = 0.0;
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         printf("\nSubject %d:\n", i + 1);
 
         printf("Subject Name: ");
@@ -648,7 +691,7 @@ void cgpa()
 
         printf("Enter marks for %s: ", subjectName[i]);
         scanf("%f", &marks[i]);
-        getchar(); 
+        getchar();
 
         gpa[i] = convertMarksToGPA(marks[i]);
 
@@ -660,7 +703,8 @@ void cgpa()
 
     system("cls");
     printf("\n===== Result Summary =====\n");
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         printf("Subject: %-20s | Credit: %.1f | Marks: %.0f | GPA: %.2f\n",
                subjectName[i], credits[i], marks[i], gpa[i]);
     }
@@ -668,7 +712,43 @@ void cgpa()
     printf("\nTotal Credits: %.2f", totalCredits);
     printf("\nTotal Grade Points: %.2f", totalPoints);
     printf("\nCGPA: %.2f\n\n", cgpa);
-    
+}
+void stmarks()
+{
+    system("cls");
+    int S;
+    FILE *mark;
+    mark = fopen("weeklymarks.txt", "a");
+    if (!mark)
+    {
+        printf("Error opening weeklymarks.txt for writing.\n");
+        return;
+    }
+    getchar(); // Clear input buffer
+    printf("Enter The Subject Name: ");
+    fgets(sub, sizeof(sub), stdin);
+    sub[strcspn(sub, "\n")] = 0;
+
+    printf("\nEnter The Total Present Students: ");
+    scanf("%d", &S);
+    getchar(); // Clear input buffer
+    fprintf(mark, "EXAM NAME : %s,  Student(Participated): %d\n\n", sub, S);
+    int arr[S];
+    for (int i = 0; i < S; i++)
+    {
+        char studentid[10];
+        int marks;
+        printf("Enter Student %d Name: ", i + 1);
+        fgets(studentid, sizeof(studentid), stdin);
+        studentid[strcspn(studentid, "\n")] = 0;
+        printf("Enter marks for %s: ", studentid);
+        scanf("%d", &marks);
+        getchar(); // Clear input buffer
+        arr[i] = marks;
+        fprintf(mark, "Student: %s, Marks: %d\n", studentid, marks);
+    }
+    fclose(mark);
+    printf("\nWeekly test marks recorded successfully!\n");
 }
 
 // Main Function
