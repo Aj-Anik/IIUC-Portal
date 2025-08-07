@@ -1,42 +1,35 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
-void room_check()
-{
-    FILE *fp;
-    char line[555];
-    char room[50];
-    int period;
-
-    // Ask user input
-    printf("Enter period number (1-6): ");
-    scanf("%d", &period);
-    printf("Enter room name (e.g., C105): ");
-    scanf("%s", room);
-
-    // Open routine file
-    fp = fopen("routine.txt", "r");
-    if (!fp)
-    {#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 #define t_std 500
-// the regis code need for registration for the teachers
+#define hun 100
+// the regis code (Dont hack it :))
 #define Regcode "IIUC95Auth"
+
+// colors
+#define RED "\033[0;31m"
+#define GREEN "\033[0;32m"
+#define YELLOW "\033[0;33m"
+#define BLUE "\033[0;34m"
+#define MAGENTA "\033[0;35m"
+#define CYAN "\033[0;36m"
+#define BOLD "\033[1m"
+#define RESET "\033[0m"
 
 // Global Variables:
 int n, s;
 int z;
-char sub[100];
-char Tid[100];
-char Tname[100];
-char Tpass[100];
-char fname[100];
-char id[100];
+char sub[hun];
+char Tid[hun];
+char Tname[hun];
+char Tpass[hun];
+char fname[hun];
+char id[hun];
 char pass[20];
 char regT[20];
-char file_id[100], file_pass[100];
+char file_id[hun], file_pass[hun];
 
 // Functions
 
@@ -52,34 +45,28 @@ void stdt();
 void teacher_reg();
 void room_check();
 
-
 // Structure
 struct student
 {
-    char fname[100];
-    char id[100];
+    char fname[hun];
+    char id[hun];
     char pass[20];
 };
-
 
 int main()
 {
     system("cls");
-    printf("\033[1;32mINTERNATIONAL ISLAMIC UNIVERSITY CHITTAGONG\033[0m\n\n\n");
-    printf("**Press 1 for Registration(Student)**\n");
-    printf("**Press 2 for Login(Student)**\n");
-    printf("**Press 3 for Login(Teacher)**\n");
-    printf("**Press 4 for Registration(Teacher)**\n");
-    printf("**Press 5 for (Exit)**\n");
+    printf(BOLD GREEN "\n===================================================\n" RESET);
+    printf(BOLD YELLOW "     INTERNATIONAL ISLAMIC UNIVERSITY CHITTAGONG\n" RESET);
+    printf(BOLD GREEN "===================================================\n\n" RESET);
 
-    struct student a[t_std];
+    printf(BLUE "** Press 1 for " RESET CYAN "Registration (Student)\n" RESET);
+    printf(BLUE "** Press 2 for " RESET CYAN "Login (Student)\n" RESET);
+    printf(BLUE "** Press 3 for " RESET CYAN "Login (Teacher)\n" RESET);
+    printf(BLUE "** Press 4 for " RESET CYAN "Registration (Teacher)\n" RESET);
+    printf(RED "** Press 5 to " RESET BOLD RED "Exit\n\n" RESET);
 
-    FILE *log;
-    if (log == 0)
-    {
-        fopen("userinfo.txt", "w");
-    }
-    fflush(stdin);
+    printf(GREEN "Enter your choice: " RESET);
     scanf("%d", &n);
     getchar();
     if (n == 1)
@@ -112,27 +99,27 @@ int main()
 void regis()
 {
     system("cls");
-    printf("----Welcome To IIUC Student Portal Registration Page----\n\n");
+    printf(BOLD CYAN "----Welcome To IIUC Student Portal Registration Page----\n\n" RESET);
     FILE *log;
 
-    printf("\n=== Registration ===\n");
-    printf("Enter Your Full Name\n");
+    printf(BOLD GREEN "\n=== Registration ===\n" RESET);
+    printf(YELLOW "Enter Your Full Name\n" RESET);
     fgets(fname, sizeof(fname), stdin);
     fname[strcspn(fname, "\n")] = 0;
-    printf("Enter Your ID\n");
+    printf(YELLOW "Enter Your ID\n" RESET);
     fgets(id, sizeof(id), stdin);
     id[strcspn(id, "\n")] = 0;
-    printf("Enter Your Password \n");
+    printf(YELLOW "Enter Your Password \n" RESET);
     fgets(pass, sizeof(pass), stdin);
     pass[strcspn(pass, "\n")] = 0;
 
     log = fopen("userinfo.txt", "a");
     fprintf(log, "%s %s\n", id, pass);
     fclose(log);
-    printf("\nRegistration successful!\n\n");
-    printf("Your Username : %s\n", id);
-    printf("Your Password : %s\n\n", pass);
-    printf("To Login press 2\n");
+    printf(BOLD GREEN "\nRegistration successful!\n\n" RESET);
+    printf(CYAN "Your Username : " RESET BOLD "%s\n" RESET, id);
+    printf(CYAN "Your Password : " RESET BOLD "%s\n\n" RESET, pass);
+    printf(BLUE "To Login press 2\n" RESET);
     scanf("%d", &n);
     if (n == 2)
     {
@@ -143,19 +130,19 @@ void login()
 {
     system("cls");
 
-    printf("----Welcome To IIUC Student Portal Login Page----\n\n");
+    printf(BOLD CYAN "----Welcome To IIUC Student Portal Login Page----\n\n" RESET);
 here:
-    printf("\n=== Login ===\n");
-    printf("Enter username: ");
+    printf(BOLD GREEN "\n=== Login ===\n" RESET);
+    printf(YELLOW "Enter username: " RESET);
     scanf("%s", id);
-    printf("Enter password: ");
+    printf(YELLOW "Enter password: " RESET);
     scanf("%s", pass);
 
     FILE *log;
     log = fopen("userinfo.txt", "r");
     if (log == NULL)
     {
-        printf("Error opening file or no registered users.\n");
+        printf(RED "Error opening file or no registered users.\n" RESET);
         return;
     }
     int found = 0;
@@ -171,31 +158,31 @@ here:
     if (found)
     {
         system("cls");
-        printf("Login successful! Welcome, %s\n\n\n\n", id);
+        printf(BOLD GREEN "Login successful! Welcome, " RESET BOLD CYAN "%s\n\n\n\n" RESET, id);
         stdt();
     }
     else
     {
         system("cls");
-        printf("Login failed. Invalid username or password.\n");
+        printf(BOLD RED "Login failed. Invalid username or password.\n" RESET);
         goto here;
     }
 }
 void loginT()
 {
     system("cls");
-    printf("----Welcome to Teacher's Login----\n\n");
+    printf(BOLD MAGENTA "----Welcome to Teacher's Login----\n\n" RESET);
     int T = 0;
 here:
-    printf("Enter username: ");
+    printf(YELLOW "Enter username: " RESET);
     scanf("%s", id);
-    printf("Enter password: ");
+    printf(YELLOW "Enter password: " RESET);
     scanf("%s", pass);
     FILE *ln;
     ln = fopen("teacherinfo.txt", "r");
     if (ln == NULL)
     {
-        printf("Error opening file or no registered users.\n");
+        printf(RED "Error opening file or no registered users.\n" RESET);
         return;
     }
     int found = 0;
@@ -212,11 +199,12 @@ here:
     if (found)
     {
         T = 1;
-        printf("Login successful! Welcome, %s\n", id);
+
+        printf(BOLD GREEN "Login successful! Welcome, " RESET BOLD MAGENTA "%s\n" RESET, id);
     }
     else
     {
-        printf("Login failed. Invalid username or password.\n");
+        printf(BOLD RED "Login failed. Invalid username or password.\n" RESET);
         goto here;
     }
     if (T == 1)
@@ -227,31 +215,36 @@ here:
 void OptT()
 {
     system("cls");
-    FILE *not;
-    if (not == NULL)
+    printf(CYAN "Logging in" RESET);
+    for (int i = 0; i < 3; i++)
     {
-        not = fopen("notice.txt", "w");
+        printf(CYAN "." RESET);
+        fflush(stdout);
+        sleep(1);
     }
+    printf("\n");
     int T1;
-    char notice[100];
 yes:
-    printf("1.Room Availability\n");
-    printf("2.Class Checker\n");
-    printf("3.Weekly Test Marks\n");
-    printf("4.LogOut\n");
-    printf("Choose From 1-3 : ");
+    printf(BLUE "1." RESET CYAN "Room Availability\n" RESET);
+    printf(BLUE "2." RESET CYAN "Class Checker\n" RESET);
+    printf(BLUE "3." RESET CYAN "Weekly Test Marks\n" RESET);
+    printf(BLUE "4." RESET CYAN "Write Notice\n" RESET);
+    printf(RED "5." RESET BOLD RED "LogOut\n" RESET);
+
+    printf(GREEN "Choose From 1-5 : " RESET);
     scanf("%d", &T1);
-    if (T1 < 1 || T1 > 4)
+    if (T1 < 1 || T1 > 5)
     {
         system("cls");
-        printf("Wrong Input .....\nTry Again\n");
+        printf(RED "Wrong Input .....\nTry Again\n" RESET);
         goto yes;
     }
+
     if (T1 == 1)
     {
         system("cls");
         room_check();
-        printf("Press 1 to back\n");
+        printf(BLUE "Press 1 to back\n" RESET);
     P:
         scanf("%d", &z);
         if (z == 1)
@@ -262,7 +255,7 @@ yes:
         else
         {
             system("cls");
-            printf("Invalid Input \nTry Again : ");
+            printf(RED "Invalid Input \nTry Again : " RESET);
             goto P;
         }
     }
@@ -271,7 +264,7 @@ yes:
         system("cls");
         class_check();
 
-        printf("Press 1 to back\n");
+        printf(BLUE "Press 1 to back\n" RESET);
         scanf("%d", &z);
         if (z == 1)
         {
@@ -280,48 +273,112 @@ yes:
         }
         else
         {
-            printf("Invalid Input \nTry Again : ");
+            printf(RED "Invalid Input \nTry Again : " RESET);
             goto P;
         }
     }
-    if (T1 == 4)
+    if (T1 == 5)
     {
+        system("cls");
+        printf(CYAN "Logging OUT" RESET);
+        for (int i = 0; i < 3; i++)
+        {
+            printf(CYAN "." RESET);
+            fflush(stdout);
+            sleep(1);
+        }
+        printf("\n");
         main();
     }
     if (T1 == 3)
     {
         std_marks();
+        printf(BLUE "Press 1 to back\n" RESET);
+        scanf("%d", &z);
+        if (z == 1)
+        {
+            system("cls");
+            goto yes;
+        }
+    }
+    if (T1 == 4)
+    {
+        system("cls");
+        FILE *not;
+        not = fopen("notice.txt", "a"); // Append mode
+        if (!not)
+        {
+            printf(RED "Error opening notice.txt.\n" RESET);
+            goto yes;
+        }
+        getchar(); // clear input buffer
+        char notice[256];
+        char date[50];
+
+        printf(CYAN "Enter Date (DD-MM-YY): " RESET);
+        fgets(date, sizeof(date), stdin);
+        date[strcspn(date, "\n")] = 0;
+
+        printf(CYAN "Enter your notice: " RESET);
+        fgets(notice, sizeof(notice), stdin);
+        notice[strcspn(notice, "\n")] = 0;
+
+        fprintf(not, "[%s] %s: %s\n\n", date, id, notice); // id = teacher ID
+        fclose(not);
+        printf(GREEN "Notice sent successfully!\n" RESET);
+
+        printf(BLUE "\nPress 1 to go back\n" RESET);
+        scanf("%d", &z);
+        if (z == 1)
+        {
+            system("cls");
+            goto yes;
+        }
+        else
+        {
+            system("cls");
+            goto yes;
+        }
     }
 }
 void stdt()
 {
     system("cls");
-    //printf("\nWelcome %s\n", i);
-    printf("Semester : 1st\n\n\n");
+    printf(YELLOW "Logging in" RESET);
+    for (int i = 0; i < 3; i++)
+    {
+        printf(YELLOW "." RESET);
+        fflush(stdout);
+        sleep(1);
+    }
+    printf("\n");
+    // printf("\nWelcome %s\n", i);
 no:
-    printf("1.Room Check\n");
-    printf("2.Class Check\n");
-    printf("3.Registrated Subject\n");
-    printf("4.Teacher's List\n");
-    printf("5.CGPA Calculator\n");
-    printf("6.Weekly Result\n");
-    printf("7.LogOut\n\n");
+    printf(CYAN BOLD "\n=== STUDENT PORTAL ===\n\n" RESET);
+    printf(BLUE "1. Room Check\n" RESET);
+    printf(BLUE "2. Class Check\n" RESET);
+    printf(BLUE "3. Registrated Subject\n" RESET);
+    printf(BLUE "4. Teacher's List\n" RESET);
+    printf(BLUE "5. CGPA Calculator\n" RESET);
+    printf(BLUE "6. Weekly Result\n" RESET);
+    printf(BLUE "7. View Notices\n" RESET);
+    printf(BLUE "8. LogOut\n\n" RESET);
 
-    printf("Choose From 1-7 : ");
+    printf(YELLOW "Choose From 1-8 : " RESET);
     scanf("%d", &s);
-    if (s < 1 || s > 7)
+    if (s < 1 || s > 8)
     {
         system("cls");
-        printf("Wrong Input .....\nTry Again\n");
+        printf(RED "Wrong Input .....\nTry Again\n" RESET);
         goto no;
     }
     if (s == 1)
     {
         system("cls");
-        printf("Room Check :\n");
+        printf(CYAN "Room Check :\n" RESET);
         room_check();
 
-        printf("Press 1 to back\n");
+        printf(BLUE "Press 1 to back\n" RESET);
     T:
         scanf("%d", &z);
         if (z == 1)
@@ -332,24 +389,24 @@ no:
         else
         {
             system("cls");
-            printf("Invalid Input \nTry Again : ");
+            printf(RED "Invalid Input \nTry Again : " RESET);
             goto T;
         }
     }
     if (s == 3)
     {
         system("cls");
-        printf("   Credit Hour |Registrated Subjects:\n\n");
-        printf("1.     3       |Computer Programming 1\n");
-        printf("2.    1.5      |Computer Programming 1 Lab\n");
-        printf("3.     3       |Basic Electrical Engineering\n");
-        printf("4.    1.5      |Basic Electrical Engineering Lab\n");
-        printf("5.     2       |Advanced English\n");
-        printf("6.     1       |Text of Ethics and Morality \n");
-        printf("7.     3       |Mathematics I (Differential and Integral Calculus)\n");
-        printf("8.     3       |Physics I (Mechanics, Waves, Heat and Thermodynamics)\n\n");
+        printf(CYAN "   Credit Hour |Registrated Subjects:\n\n" RESET);
+        printf(GREEN "1.     3       |Computer Programming 1\n" RESET);
+        printf(GREEN "2.    1.5      |Computer Programming 1 Lab\n" RESET);
+        printf(GREEN "3.     3       |Basic Electrical Engineering\n" RESET);
+        printf(GREEN "4.    1.5      |Basic Electrical Engineering Lab\n" RESET);
+        printf(GREEN "5.     2       |Advanced English\n" RESET);
+        printf(GREEN "6.     1       |Text of Ethics and Morality \n" RESET);
+        printf(GREEN "7.     3       |Mathematics I (Differential and Integral Calculus)\n" RESET);
+        printf(GREEN "8.     3       |Physics I (Mechanics, Waves, Heat and Thermodynamics)\n\n" RESET);
 
-        printf("Press 1 to back\n");
+        printf(BLUE "Press 1 to back\n" RESET);
         scanf("%d", &z);
         if (z == 1)
         {
@@ -359,21 +416,21 @@ no:
         else
         {
             system("cls");
-            printf("Invalid Input \nTry Again : ");
+            printf(RED "Invalid Input \nTry Again : " RESET);
             goto T;
         }
     }
     if (s == 4)
     {
         system("cls");
-        printf("Teacher's Info :\n\n\n");
-        printf("Teacher's Name   |         Email Address     |  Phone Number\n\n");
-        printf("Jamil As-ad      | jamilasad1@gmail.com      |  01626890190\n");
-        printf("Sahariar Reza    | Sahariarp@gmail.com       |  01521328094\n");
-        printf("Md.Rashedul Islam| rashed_math@gmail.com     |  01717121186\n");
-        printf("Kafil Uddin      | mdkafil_iiuc@gmail.com    |  01819101372\n");
-        printf("Abdullah Al Mamun| mamun.phys@gmail.com      |  01521483685\n\n");
-        printf("Press 1 to back\n");
+        printf(CYAN "Teacher's Info :\n\n\n" RESET);
+        printf(MAGENTA "Teacher's Name   |         Email Address     |  Phone Number\n\n" RESET);
+        printf(GREEN "Jamil As-ad      | jamilasad1@gmail.com      |  01626890190\n" RESET);
+        printf(GREEN "Sahariar Reza    | Sahariarp@gmail.com       |  01521328094\n" RESET);
+        printf(GREEN "Md.Rashedul Islam| rashed_math@gmail.com     |  01717121186\n" RESET);
+        printf(GREEN "Kafil Uddin      | mdkafil_iiuc@gmail.com    |  01819101372\n" RESET);
+        printf(GREEN "Abdullah Al Mamun| mamun.phys@gmail.com      |  01521483685\n\n" RESET);
+        printf(BLUE "Press 1 to back\n" RESET);
         scanf("%d", &z);
         if (z == 1)
         {
@@ -382,7 +439,7 @@ no:
         }
         else
         {
-            printf("Invalid Input \nTry Again : %d", &z);
+            printf(RED "Invalid Input \nTry Again : " RESET);
             goto T;
         }
     }
@@ -390,7 +447,7 @@ no:
     {
         system("cls");
         class_check();
-        printf("Press 1 to back\n");
+        printf(BLUE "Press 1 to back\n" RESET);
         scanf("%d", &z);
         if (z == 1)
         {
@@ -399,14 +456,14 @@ no:
         }
         else
         {
-            printf("Invalid Input \nTry Again : %d", &z);
+            printf(RED "Invalid Input \nTry Again : " RESET);
             goto T;
         }
     }
     if (s == 5)
     {
         cgpa();
-        printf("Press 1 to back\n");
+        printf(BLUE "Press 1 to back\n" RESET);
         scanf("%d", &z);
         if (z == 1)
         {
@@ -416,12 +473,54 @@ no:
         else
         {
             system("cls");
-            printf("Invalid Input \nTry Again : ");
+            printf(RED "Invalid Input \nTry Again : " RESET);
             goto T;
         }
     }
     if (s == 7)
     {
+        system("cls");
+        FILE *not = fopen("notice.txt", "r");
+        if (!not)
+        {
+            printf(YELLOW "No notices available.\n" RESET);
+        }
+        else
+        {
+            char line[256];
+            printf(CYAN BOLD "\n--- Latest Notices ---\n\n" RESET);
+            while (fgets(line, sizeof(line), not))
+            {
+                printf(GREEN "%s" RESET, line);
+            }
+            fclose(not);
+        }
+
+        printf(BLUE "\nPress 1 to go back\n" RESET);
+        scanf("%d", &z);
+        if (z == 1)
+        {
+            system("cls");
+            goto no;
+        }
+        else
+        {
+            system("cls");
+            goto no;
+        }
+    }
+
+    if (s == 8)
+    {
+        system("cls");
+        printf(CYAN "Logging OUT" RESET);
+        for (int i = 0; i < 3; i++)
+        {
+            printf(CYAN "." RESET);
+            fflush(stdout);
+            sleep(1);
+        }
+        printf("\n");
         main();
     }
     if (s == 6)
@@ -429,27 +528,33 @@ no:
         system("cls");
         FILE *check;
         check = fopen("weeklymarks.txt", "r");
-        if (check == NULL) {
-            printf("No weekly marks recorded yet.\n");
-        } else {
+        if (check == NULL)
+        {
+            printf(YELLOW "No weekly marks recorded yet.\n" RESET);
+        }
+        else
+        {
             char line[256];
-            printf("\n--- Weekly Test Marks ---\n\n");
-            while (fgets(line, sizeof(line), check)) {
-                printf("%s", line);
+            printf(CYAN BOLD "\n--- Weekly Test Marks ---\n\n" RESET);
+            while (fgets(line, sizeof(line), check))
+            {
+                printf(GREEN "%s" RESET, line);
             }
             fclose(check);
         }
-        printf("\nPress 1 to back\n");
+        printf(BLUE "\nPress 1 to back\n" RESET);
         scanf("%d", &z);
-        if (z == 1) {
+        if (z == 1)
+        {
             system("cls");
             goto no;
-        } else {
+        }
+        else
+        {
             system("cls");
-            printf("Invalid Input \nTry Again : ");
+            printf(RED "Invalid Input \nTry Again : " RESET);
             goto T;
         }
-        
     }
 }
 void teacher_reg()
@@ -459,37 +564,37 @@ void teacher_reg()
     int pck = 3;
     strcpy(chk, Regcode);
 
-    printf("Welcome to Registration\n\n");
+    printf(CYAN BOLD "Welcome to Teacher Registration\n\n" RESET);
 pc:
-    printf("Enter The 10 Digit Code Provided By the Authority to registration :\n");
+    printf(YELLOW "Enter The 10 Digit Code Provided By the Authority to registration :\n" RESET);
     fgets(regT, sizeof(regT), stdin);
     regT[strcspn(regT, "\n")] = 0;
     if (strcmp(regT, chk) == 0)
     {
-        printf("Verification Successful\nNow You can Proceed\n");
+        printf(GREEN "Verification Successful\nNow You can Proceed\n" RESET);
         system("cls");
-        printf("----Welcome To Teacher Registration Page----\n\n");
+        printf(CYAN BOLD "----Welcome To Teacher Registration Page----\n\n" RESET);
         FILE *Tea;
 
-        printf("\n=== Registration ===\n");
-        printf("Enter Your Name\n");
+        printf(MAGENTA "\n=== Registration ===\n" RESET);
+        printf(YELLOW "Enter Your Name\n" RESET);
         fgets(Tname, sizeof(Tname), stdin);
         Tname[strcspn(Tname, "\n")] = 0;
-        printf("Enter Your ID Name\n");
+        printf(YELLOW "Enter Your ID Name\n" RESET);
         fgets(Tid, sizeof(Tid), stdin);
         Tid[strcspn(Tid, "\n")] = 0;
-        printf("Enter Your Password \n");
+        printf(YELLOW "Enter Your Password \n" RESET);
         fgets(Tpass, sizeof(Tpass), stdin);
         Tpass[strcspn(Tpass, "\n")] = 0;
 
         Tea = fopen("teacherinfo.txt", "a");
-        fprintf(Tea, "%s %s %s\n", Tname, Tid, Tpass);
+        fprintf(Tea, "%s %s\n", Tid, Tpass);
         fclose(Tea);
-        printf("\nRegistration successful!\n\n");
-        printf("Your Username : %s\n", Tid);
-        printf("Your Password : %s\n\n", Tpass);
+        printf(GREEN "\nRegistration successful!\n\n" RESET);
+        printf(BLUE "Your Username : %s\n" RESET, Tid);
+        printf(BLUE "Your Password : %s\n\n" RESET, Tpass);
     logt:
-        printf("To Login press 2\n");
+        printf(BLUE "To Login press 2\n" RESET);
         scanf("%d", &n);
         if (n == 2)
         {
@@ -497,7 +602,7 @@ pc:
         }
         else
         {
-            printf("Try Again\n\n");
+            printf(RED "Try Again\n\n" RESET);
             goto logt;
         }
     }
@@ -505,12 +610,12 @@ pc:
     {
         pck--;
         system("cls");
-        printf("You have %d chances\n", pck);
+        printf(RED "You have %d chances\n" RESET, pck);
 
         if (pck == 0)
         {
             system("cls");
-            printf("You Have Been Blocked\nContract In 'ACAD' ");
+            printf(RED BOLD "You Have Been Blocked\nContract In 'ACAD' " RESET);
 
             return;
         }
@@ -527,12 +632,12 @@ void room_check()
     int d;
 
     // Ask user input
-    printf("Enter Day (1-5)\n");
-    printf("1.Sat  2.Sun  3.Mon  4.Tues  5.Wed\n");
+    printf(CYAN "Enter Day (1-5)\n" RESET);
+    printf(BLUE "1.Sat  2.Sun  3.Mon  4.Tues  5.Wed\n" RESET);
     scanf("%d", &d);
-    printf("Enter period number (1-6): ");
+    printf(YELLOW "Enter period number (1-6): " RESET);
     scanf("%d", &period);
-    printf("Enter room name (e.g., C105): ");
+    printf(YELLOW "Enter room name (e.g., C105): " RESET);
     scanf("%s", room);
 
     // Days
@@ -627,12 +732,12 @@ void class_check()
     int d;
 
     // Ask user for input
-    printf("Enter Day (1-5)\n");
-    printf("1.Sat  2.Sun  3.Mon  4.Tues  5.Wed\n");
+    printf(CYAN "Enter Day (1-5)\n" RESET);
+    printf(BLUE "1.Sat  2.Sun  3.Mon  4.Tues  5.Wed\n" RESET);
     scanf("%d", &d);
-    printf("Enter your section (1AM/1BM/1CM): ");
+    printf(YELLOW "Enter your section (1AM/1BM/1CM): " RESET);
     scanf("%s", section);
-    printf("Enter period number (1-6): ");
+    printf(YELLOW "Enter period number (1-6): " RESET);
     scanf("%d", &period);
 
     // Days
@@ -695,15 +800,15 @@ void class_check()
             char *bm = strtok(NULL, ";");
             char *cm = strtok(NULL, ";");
 
-            printf("\nTime: %s\n", time);
+            printf(MAGENTA "\nTime: %s\n" RESET, time);
             if (strcmp(section, "1AM") == 0)
-                printf("Class: %s\n", am);
+                printf(GREEN "Class: %s\n" RESET, am);
             else if (strcmp(section, "1BM") == 0)
-                printf("Class: %s\n", bm);
+                printf(GREEN "Class: %s\n" RESET, bm);
             else if (strcmp(section, "1CM") == 0)
-                printf("Class: %s\n", cm);
+                printf(GREEN "Class: %s\n" RESET, cm);
             else
-                printf("Invalid section!\n");
+                printf(RED "Invalid section!\n" RESET);
             break;
         }
     }
@@ -737,7 +842,7 @@ void cgpa()
 {
     system("cls");
     int n;
-    printf("Enter the number of subjects: ");
+    printf(CYAN "Enter the number of subjects: " RESET);
     scanf("%d", &n);
 
     getchar();
@@ -749,16 +854,16 @@ void cgpa()
 
     for (int i = 0; i < n; i++)
     {
-        printf("\nSubject %d:\n", i + 1);
+        printf(YELLOW "\nSubject %d:\n" RESET, i + 1);
 
-        printf("Subject Name: ");
+        printf(CYAN "Subject Name: " RESET);
         fgets(subjectName[i], sizeof(subjectName[i]), stdin);
         subjectName[i][strcspn(subjectName[i], "\n")] = '\0';
 
-        printf("Enter credit for %s: ", subjectName[i]);
+        printf(CYAN "Enter credit for %s: " RESET, subjectName[i]);
         scanf("%f", &credits[i]);
 
-        printf("Enter marks for %s: ", subjectName[i]);
+        printf(CYAN "Enter marks for %s: " RESET, subjectName[i]);
         scanf("%f", &marks[i]);
         getchar();
 
@@ -771,16 +876,16 @@ void cgpa()
     float cgpa = totalPoints / totalCredits;
 
     system("cls");
-    printf("\n===== Result Summary =====\n");
+    printf(MAGENTA BOLD "\n===== Result Summary =====\n" RESET);
     for (int i = 0; i < n; i++)
     {
-        printf("Subject: %-20s | Credit: %.1f | Marks: %.0f | GPA: %.2f\n",
+        printf(GREEN "Subject: %-20s | Credit: %.1f | Marks: %.0f | GPA: %.2f\n" RESET,
                subjectName[i], credits[i], marks[i], gpa[i]);
     }
 
-    printf("\nTotal Credits: %.2f", totalCredits);
-    printf("\nTotal Grade Points: %.2f", totalPoints);
-    printf("\nCGPA: %.2f\n\n", cgpa);
+    printf(BLUE "\nTotal Credits: %.2f" RESET, totalCredits);
+    printf(BLUE "\nTotal Grade Points: %.2f" RESET, totalPoints);
+    printf(CYAN BOLD "\nCGPA: %.2f\n\n" RESET, cgpa);
 }
 void std_marks()
 {
@@ -790,204 +895,36 @@ void std_marks()
     mark = fopen("weeklymarks.txt", "a");
     if (!mark)
     {
-        printf("Error opening weeklymarks.txt for writing.\n");
+        printf(RED "Error opening weeklymarks.txt for writing.\n" RESET);
         return;
     }
     getchar(); // Clear input buffer
     char date[100];
-    printf("Enter Date(MM-DD-YY): ");
+    printf(CYAN "Enter Date(MM-DD-YY): " RESET);
     fgets(date, sizeof(date), stdin);
     date[strcspn(date, "\n")] = 0;
-    printf("Enter The Subject Name: ");
+    printf(CYAN "Enter The Subject Name: " RESET);
     fgets(sub, sizeof(sub), stdin);
     sub[strcspn(sub, "\n")] = 0;
 
-    printf("\nEnter The Total Present Students: ");
+    printf(YELLOW "\nEnter The Total Present Students: " RESET);
     scanf("%d", &S);
     getchar(); // Clear input buffer
-    fprintf(mark, "EXAM DATE : %s \nEXAM NAME : %s   Student(Participated): %d\n\n",date, sub, S);
+    fprintf(mark, "EXAM DATE : %s \nEXAM NAME : %s   Student(Participated): %d\n\n", date, sub, S);
     int arr[S];
     for (int i = 0; i < S; i++)
     {
         char studentid[10];
         int marks;
-        printf("Enter Student %d ID: ", i + 1);
+        printf(BLUE "Enter Student %d ID: " RESET, i + 1);
         fgets(studentid, sizeof(studentid), stdin);
         studentid[strcspn(studentid, "\n")] = 0;
-        printf("Enter marks for %s: ", studentid);
+        printf(BLUE "Enter marks for %s: " RESET, studentid);
         scanf("%d", &marks);
         getchar(); // Clear input buffer
         arr[i] = marks;
         fprintf(mark, "Student: %s, Marks: %d\n\n\n", studentid, marks);
     }
     fclose(mark);
-    printf("\nWeekly test marks recorded successfully!\n");
-}
-
-    }
-
-    // Skip header line
-    fgets(line, sizeof(line), fp);
-
-    int current = 0, found = 0;
-    while (fgets(line, sizeof(line), fp))
-    {
-        current++;
-
-        // If we are at the requested period
-        if (current == period)
-        {
-            line[strcspn(line, "\n")] = 0; // Remove newline
-
-            // Split using semicolon
-            char *time = strtok(line, ";");
-            char *am = strtok(NULL, ";");
-            char *bm = strtok(NULL, ";");
-            char *cm = strtok(NULL, ";");
-
-            // Check if the room exists in this period
-            if ((am && strstr(am, room)) || (bm && strstr(bm, room)) || (cm && strstr(cm, room)))
-            {
-                printf("\nRoom %s is OCCUPIED in period %d.\n", room, period);
-                found = 1;
-            }
-            else
-            {
-                printf("\nRoom %s is EMPTY in period %d.\n", room, period);
-            }
-            break;
-        }
-    }
-
-    fclose(fp);
-
-    // Handle invalid period
-    if (current < period)
-    {
-        printf("\nInvalid period number. No such row in the file.\n");
-    }
-
-}
-
-void class_check()
-{
-    FILE *fp;
-    char line[256];
-    char section[10];
-    int period;
-
-    // Ask user for input
-    printf("Enter your section (1AM/1BM/1CM): ");
-    scanf("%s", section);
-    printf("Enter period number (1-6): ");
-    scanf("%d", &period);
-
-    // Open routine file
-    fp = fopen("routine.txt", "r");
-    if (!fp)
-    {
-        printf("Could not open routine file.\n");
-    }
-
-    // Read header (ignore first line)
-    fgets(line, sizeof(line), fp);
-
-    int current = 0;
-    while (fgets(line, sizeof(line), fp))
-    {
-        current++;
-        if (current == period)
-        {
-            // Remove newline
-            line[strcspn(line, "\n")] = 0;
-
-            // Split CSV line
-            char *token = strtok(line, ";");
-            char *time = token;
-            char *am = strtok(NULL, ";");
-            char *bm = strtok(NULL, ";");
-            char *cm = strtok(NULL, ";");
-
-            printf("\nTime: %s\n", time);
-            if (strcmp(section, "1AM") == 0)
-                printf("Class: %s\n", am);
-            else if (strcmp(section, "1BM") == 0)
-                printf("Class: %s\n", bm);
-            else if (strcmp(section, "1CM") == 0)
-                printf("Class: %s\n", cm);
-            else
-                printf("Invalid section!\n");
-            break;
-        }
-    }
-
-    fclose(fp);
-}
-
-int main()
-{
-    printf("\\\\choose the option\\\\\n\n");
-
-    printf("\\\\1. Student Login...\n");
-    printf("\\\\2. Teacher Login...\n");
-    printf("\\\\3. Student Registration...\n");
-
-    int opt;
-    scanf("%d", &opt);
-
-    if (opt > 3 || opt < 1)
-    {
-        printf("choose between 1-3\n\n");
-    }
-    else if (opt == 1)
-    {
-        printf("student page\n");
-
-        printf("1. Class check\n");
-        printf("2. Room check\n");
-
-        int opts;
-        scanf("%d", &opts);
-
-        if (opts > 2 || opts < 1)
-        {
-            printf("choose between 1-2\n\n");
-        }
-        else if (opts == 1) // class check
-        {
-            class_check();
-        }
-        else if (opts == 2) // Room check
-        {
-            room_check();
-        }
-    }
-    else if (opt == 2)
-    {
-        printf("Teacher page\n");
-
-        printf("1. Room check\n");
-
-        int optt;
-
-        scanf("%d", &optt);
-
-        if (optt == 1)
-        {
-            room_check();
-        }
-        
-    }
-    else if (opt == 3)
-    {
-        FILE *fp = fopen("student_info.txt", "r");
-
-        if (!fp)
-    {
-        printf("Could not open routine file.\n");
-    }
-    
-    }
-    
-    return 0;
+    printf(GREEN "\nWeekly test marks recorded successfully!\n" RESET);
 }
