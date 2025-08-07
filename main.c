@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <time.h>
 
 #define t_std 500
 // the regis code (Dont hack it :))
@@ -44,6 +45,21 @@ void stdt();
 void teacher_reg();
 void room_check();
 
+// Function to get current date and day
+void getCurrentDateTime(char *dateStr, char *dayStr) {
+    time_t now;
+    struct tm *timeinfo;
+    
+    time(&now);
+    timeinfo = localtime(&now);
+    
+    // Format date as DD-MM-YY
+    strftime(dateStr, 50, "%d-%m-%y", timeinfo);
+    
+    // Get day name
+    strftime(dayStr, 20, "%A", timeinfo);
+}
+
 // Structure
 struct student
 {
@@ -55,9 +71,22 @@ struct student
 int main()
 {
     system("cls");
-    printf(BOLD GREEN "\n===================================================\n" RESET);
-    printf(BOLD YELLOW "     INTERNATIONAL ISLAMIC UNIVERSITY CHITTAGONG\n" RESET);
-    printf(BOLD GREEN "===================================================\n\n" RESET);
+    printf(BOLD GREEN "===================================================\n" RESET);
+    printf(BOLD YELLOW "   INTERNATIONAL ISLAMIC UNIVERSITY CHITTAGONG\n" RESET);
+    printf(BOLD GREEN "===================================================\n" RESET);
+
+    time_t t;
+    struct tm *tm_info;
+    char buffer[50];
+
+    time(&t);
+    tm_info = localtime(&t);
+
+    // Format: e.g., "Thursday, 07 August 2025"
+    strftime(buffer, sizeof(buffer), "%A, %d %B %Y", tm_info);
+
+    // Optional color for date header
+    printf("\033[1;34m%s\033[0m\n\n", buffer);
 
     printf(BLUE "** Press 1 for " RESET CYAN "Registration (Student)\n" RESET);
     printf(BLUE "** Press 2 for " RESET CYAN "Login (Student)\n" RESET);
@@ -222,6 +251,7 @@ void OptT()
         sleep(1);
     }
     printf("\n");
+    system("cls");
     int T1;
 yes:
     printf(BLUE "1." RESET CYAN "Room Availability\n" RESET);
@@ -312,17 +342,18 @@ yes:
         }
         getchar(); // clear input buffer
         char notice[256];
-        char date[50];
+        char currentDate[50];
+        char currentDay[20];
 
-        printf(CYAN "Enter Date (DD-MM-YY): " RESET);
-        fgets(date, sizeof(date), stdin);
-        date[strcspn(date, "\n")] = 0;
-
+        // Get current date and day automatically
+        getCurrentDateTime(currentDate, currentDay);
+        
+        printf(GREEN "Current Date: %s (%s)\n" RESET, currentDate, currentDay);
         printf(CYAN "Enter your notice: " RESET);
         fgets(notice, sizeof(notice), stdin);
         notice[strcspn(notice, "\n")] = 0;
 
-        fprintf(not, "[%s] %s: %s\n\n", date, id, notice); // id = teacher ID
+        fprintf(not, "[%s - %s] %s: %s\n\n", currentDate, currentDay, id, notice); 
         fclose(not);
         printf(GREEN "Notice sent successfully!\n" RESET);
 
@@ -352,6 +383,7 @@ void stdt()
     }
     printf("\n");
     // printf("\nWelcome %s\n", i);
+    system("cls");
 no:
     printf(CYAN BOLD "\n=== STUDENT PORTAL ===\n\n" RESET);
     printf(BLUE "1. Room Check\n" RESET);
@@ -479,6 +511,12 @@ no:
     if (s == 7)
     {
         system("cls");
+        char currentDate[50];
+        char currentDay[20];
+        getCurrentDateTime(currentDate, currentDay);
+        
+        printf(MAGENTA "Today: %s (%s)\n" RESET, currentDate, currentDay);
+        
         FILE *not = fopen("notice.txt", "r");
         if (!not)
         {
@@ -898,10 +936,13 @@ void std_marks()
         return;
     }
     getchar(); // Clear input buffer
-    char date[100];
-    printf(CYAN "Enter Date(MM-DD-YY): " RESET);
-    fgets(date, sizeof(date), stdin);
-    date[strcspn(date, "\n")] = 0;
+    char currentDate[50];
+    char currentDay[20];
+    
+    // Get current date and day automatically
+    getCurrentDateTime(currentDate, currentDay);
+    
+    printf(GREEN "Current Date: %s (%s)\n" RESET, currentDate, currentDay);
     printf(CYAN "Enter The Subject Name: " RESET);
     fgets(sub, sizeof(sub), stdin);
     sub[strcspn(sub, "\n")] = 0;
@@ -909,7 +950,7 @@ void std_marks()
     printf(YELLOW "\nEnter The Total Present Students: " RESET);
     scanf("%d", &S);
     getchar(); // Clear input buffer
-    fprintf(mark, "EXAM DATE : %s \nEXAM NAME : %s   Student(Participated): %d\n\n", date, sub, S);
+    fprintf(mark, "EXAM DATE : %s (%s) \nEXAM NAME : %s   Student(Participated): %d\n\n", currentDate, currentDay, sub, S);
     int arr[S];
     for (int i = 0; i < S; i++)
     {
