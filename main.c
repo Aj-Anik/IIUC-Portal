@@ -1,6 +1,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+void room_check()
+{
+    FILE *fp;
+    char line[555];
+    char room[50];
+    int period;
+
+    // Ask user input
+    printf("Enter period number (1-6): ");
+    scanf("%d", &period);
+    printf("Enter room name (e.g., C105): ");
+    scanf("%s", room);
+
+    // Open routine file
+    fp = fopen("routine.txt", "r");
+    if (!fp)
+    {#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #define t_std 500
 // the regis code need for registration for the teachers
 #define Regcode "IIUC95Auth"
@@ -20,7 +40,7 @@ char file_id[100], file_pass[100];
 
 // Functions
 
-void stmarks();
+void std_marks();
 void cgpa();
 float convertMarksToGPA(int marks);
 void class_check();
@@ -29,8 +49,9 @@ void regis();
 void login();
 void OptT();
 void stdt();
-void regisT();
+void teacher_reg();
 void room_check();
+
 
 // Structure
 struct student
@@ -40,6 +61,52 @@ struct student
     char pass[20];
 };
 
+
+int main()
+{
+    system("cls");
+    printf("\033[1;32mINTERNATIONAL ISLAMIC UNIVERSITY CHITTAGONG\033[0m\n\n\n");
+    printf("**Press 1 for Registration(Student)**\n");
+    printf("**Press 2 for Login(Student)**\n");
+    printf("**Press 3 for Login(Teacher)**\n");
+    printf("**Press 4 for Registration(Teacher)**\n");
+    printf("**Press 5 for (Exit)**\n");
+
+    struct student a[t_std];
+
+    FILE *log;
+    if (log == 0)
+    {
+        fopen("userinfo.txt", "w");
+    }
+    fflush(stdin);
+    scanf("%d", &n);
+    getchar();
+    if (n == 1)
+    {
+        regis();
+    }
+    if (n == 2)
+    {
+        login();
+    }
+    if (n == 3)
+    {
+        loginT();
+    }
+    if (n == 4)
+    {
+        teacher_reg();
+    }
+    if (n == 5)
+    {
+        system("cls");
+        printf("Exiting............");
+        return 0;
+    }
+
+    return 0;
+}
 // Function Shuru
 
 void regis()
@@ -105,7 +172,7 @@ here:
     {
         system("cls");
         printf("Login successful! Welcome, %s\n\n\n\n", id);
-        stdt(id);
+        stdt();
     }
     else
     {
@@ -223,13 +290,13 @@ yes:
     }
     if (T1 == 3)
     {
-        stmarks();
+        std_marks();
     }
 }
-void stdt(int i)
+void stdt()
 {
     system("cls");
-    printf("\nWelcome %s\n", i);
+    //printf("\nWelcome %s\n", i);
     printf("Semester : 1st\n\n\n");
 no:
     printf("1.Room Check\n");
@@ -385,7 +452,7 @@ no:
         
     }
 }
-void regisT()
+void teacher_reg()
 {
     system("cls");
     char chk[20];
@@ -673,6 +740,7 @@ void cgpa()
     printf("Enter the number of subjects: ");
     scanf("%d", &n);
 
+    getchar();
     char subjectName[n][50];
     float marks[n];
     float gpa[n], credits[n];
@@ -714,7 +782,7 @@ void cgpa()
     printf("\nTotal Grade Points: %.2f", totalPoints);
     printf("\nCGPA: %.2f\n\n", cgpa);
 }
-void stmarks()
+void std_marks()
 {
     system("cls");
     int S;
@@ -756,50 +824,170 @@ void stmarks()
     printf("\nWeekly test marks recorded successfully!\n");
 }
 
-// Main Function
+    }
+
+    // Skip header line
+    fgets(line, sizeof(line), fp);
+
+    int current = 0, found = 0;
+    while (fgets(line, sizeof(line), fp))
+    {
+        current++;
+
+        // If we are at the requested period
+        if (current == period)
+        {
+            line[strcspn(line, "\n")] = 0; // Remove newline
+
+            // Split using semicolon
+            char *time = strtok(line, ";");
+            char *am = strtok(NULL, ";");
+            char *bm = strtok(NULL, ";");
+            char *cm = strtok(NULL, ";");
+
+            // Check if the room exists in this period
+            if ((am && strstr(am, room)) || (bm && strstr(bm, room)) || (cm && strstr(cm, room)))
+            {
+                printf("\nRoom %s is OCCUPIED in period %d.\n", room, period);
+                found = 1;
+            }
+            else
+            {
+                printf("\nRoom %s is EMPTY in period %d.\n", room, period);
+            }
+            break;
+        }
+    }
+
+    fclose(fp);
+
+    // Handle invalid period
+    if (current < period)
+    {
+        printf("\nInvalid period number. No such row in the file.\n");
+    }
+
+}
+
+void class_check()
+{
+    FILE *fp;
+    char line[256];
+    char section[10];
+    int period;
+
+    // Ask user for input
+    printf("Enter your section (1AM/1BM/1CM): ");
+    scanf("%s", section);
+    printf("Enter period number (1-6): ");
+    scanf("%d", &period);
+
+    // Open routine file
+    fp = fopen("routine.txt", "r");
+    if (!fp)
+    {
+        printf("Could not open routine file.\n");
+    }
+
+    // Read header (ignore first line)
+    fgets(line, sizeof(line), fp);
+
+    int current = 0;
+    while (fgets(line, sizeof(line), fp))
+    {
+        current++;
+        if (current == period)
+        {
+            // Remove newline
+            line[strcspn(line, "\n")] = 0;
+
+            // Split CSV line
+            char *token = strtok(line, ";");
+            char *time = token;
+            char *am = strtok(NULL, ";");
+            char *bm = strtok(NULL, ";");
+            char *cm = strtok(NULL, ";");
+
+            printf("\nTime: %s\n", time);
+            if (strcmp(section, "1AM") == 0)
+                printf("Class: %s\n", am);
+            else if (strcmp(section, "1BM") == 0)
+                printf("Class: %s\n", bm);
+            else if (strcmp(section, "1CM") == 0)
+                printf("Class: %s\n", cm);
+            else
+                printf("Invalid section!\n");
+            break;
+        }
+    }
+
+    fclose(fp);
+}
 
 int main()
 {
-    system("cls");
-    printf("\033[1;32mINTERNATIONAL ISLAMIC UNIVERSITY CHITTAGONG\033[0m\n\n\n");
-    printf("**Press 1 for Registration(Student)**\n");
-    printf("**Press 2 for Login(Student)**\n");
-    printf("**Press 3 for Login(Teacher)**\n");
-    printf("**Press 4 for Registration(Teacher)**\n");
-    printf("**Press 5 for (Exit)**\n");
+    printf("\\\\choose the option\\\\\n\n");
 
-    struct student a[t_std];
+    printf("\\\\1. Student Login...\n");
+    printf("\\\\2. Teacher Login...\n");
+    printf("\\\\3. Student Registration...\n");
 
-    FILE *log;
-    if (log == 0)
-    {
-        fopen("userinfo.txt", "w");
-    }
-    fflush(stdin);
-    scanf("%d", &n);
-    getchar();
-    if (n == 1)
-    {
-        regis();
-    }
-    if (n == 2)
-    {
-        login();
-    }
-    if (n == 3)
-    {
-        loginT();
-    }
-    if (n == 4)
-    {
-        regisT();
-    }
-    if (n == 5)
-    {
-        system("cls");
-        printf("Exiting............");
-        return 0;
-    }
+    int opt;
+    scanf("%d", &opt);
 
+    if (opt > 3 || opt < 1)
+    {
+        printf("choose between 1-3\n\n");
+    }
+    else if (opt == 1)
+    {
+        printf("student page\n");
+
+        printf("1. Class check\n");
+        printf("2. Room check\n");
+
+        int opts;
+        scanf("%d", &opts);
+
+        if (opts > 2 || opts < 1)
+        {
+            printf("choose between 1-2\n\n");
+        }
+        else if (opts == 1) // class check
+        {
+            class_check();
+        }
+        else if (opts == 2) // Room check
+        {
+            room_check();
+        }
+    }
+    else if (opt == 2)
+    {
+        printf("Teacher page\n");
+
+        printf("1. Room check\n");
+
+        int optt;
+
+        scanf("%d", &optt);
+
+        if (optt == 1)
+        {
+            room_check();
+        }
+        
+    }
+    else if (opt == 3)
+    {
+        FILE *fp = fopen("student_info.txt", "r");
+
+        if (!fp)
+    {
+        printf("Could not open routine file.\n");
+    }
+    
+    }
+    
     return 0;
 }
