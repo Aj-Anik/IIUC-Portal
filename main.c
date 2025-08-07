@@ -4,7 +4,6 @@
 #include <unistd.h>
 
 #define t_std 500
-#define hun 100
 // the regis code (Dont hack it :))
 #define Regcode "IIUC95Auth"
 
@@ -21,15 +20,15 @@
 // Global Variables:
 int n, s;
 int z;
-char sub[hun];
-char Tid[hun];
-char Tname[hun];
-char Tpass[hun];
-char fname[hun];
-char id[hun];
+char sub[100];
+char Tid[100];
+char Tname[100];
+char Tpass[100];
+char fname[100];
+char id[100];
 char pass[20];
 char regT[20];
-char file_id[hun], file_pass[hun];
+char file_id[100], file_pass[100];
 
 // Functions
 
@@ -48,8 +47,8 @@ void room_check();
 // Structure
 struct student
 {
-    char fname[hun];
-    char id[hun];
+    char fname[100];
+    char id[100];
     char pass[20];
 };
 
