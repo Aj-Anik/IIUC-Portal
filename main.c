@@ -44,6 +44,7 @@ void OptT();
 void stdt();
 void teacher_reg();
 void room_check();
+void section_routine();
 
 // Function to get current date and day
 void getCurrentDateTime(char *dateStr, char *dayStr) {
@@ -388,16 +389,17 @@ no:
     printf(CYAN BOLD "\n=== STUDENT PORTAL ===\n\n" RESET);
     printf(BLUE "1. Room Check\n" RESET);
     printf(BLUE "2. Class Check\n" RESET);
-    printf(BLUE "3. Registrated Subject\n" RESET);
-    printf(BLUE "4. Teacher's List\n" RESET);
-    printf(BLUE "5. CGPA Calculator\n" RESET);
-    printf(BLUE "6. Weekly Result\n" RESET);
-    printf(BLUE "7. View Notices\n" RESET);
-    printf(BLUE "8. LogOut\n\n" RESET);
+    printf(BLUE "3. Section Wise Routine\n" RESET);
+    printf(BLUE "4. Registrated Subject\n" RESET);
+    printf(BLUE "5. Teacher's List\n" RESET);
+    printf(BLUE "6. CGPA Calculator\n" RESET);
+    printf(BLUE "7. Weekly Result\n" RESET);
+    printf(BLUE "8. View Notices\n" RESET);
+    printf(BLUE "9. LogOut\n\n" RESET);
 
-    printf(YELLOW "Choose From 1-8 : " RESET);
+    printf(YELLOW "Choose From 1-9 : " RESET);
     scanf("%d", &s);
-    if (s < 1 || s > 8)
+    if (s < 1 || s > 9)
     {
         system("cls");
         printf(RED "Wrong Input .....\nTry Again\n" RESET);
@@ -427,6 +429,24 @@ no:
     if (s == 3)
     {
         system("cls");
+        section_routine();
+        printf(BLUE "Press 1 to back\n" RESET);
+        scanf("%d", &z);
+        if (z == 1)
+        {
+            system("cls");
+            goto no;
+        }
+        else
+        {
+            system("cls");
+            printf(RED "Invalid Input \nTry Again : " RESET);
+            goto T;
+        }
+    }
+    if (s == 4)
+    {
+        system("cls");
         printf(CYAN "   Credit Hour |Registrated Subjects:\n\n" RESET);
         printf(GREEN "1.     3       |Computer Programming 1\n" RESET);
         printf(GREEN "2.    1.5      |Computer Programming 1 Lab\n" RESET);
@@ -451,7 +471,7 @@ no:
             goto T;
         }
     }
-    if (s == 4)
+    if (s == 5)
     {
         system("cls");
         printf(CYAN "Teacher's Info :\n\n\n" RESET);
@@ -491,7 +511,7 @@ no:
             goto T;
         }
     }
-    if (s == 5)
+    if (s == 6)
     {
         cgpa();
         printf(BLUE "Press 1 to back\n" RESET);
@@ -508,7 +528,7 @@ no:
             goto T;
         }
     }
-    if (s == 7)
+    if (s == 8)
     {
         system("cls");
         char currentDate[50];
@@ -547,7 +567,7 @@ no:
         }
     }
 
-    if (s == 8)
+    if (s == 9)
     {
         system("cls");
         printf(CYAN "Logging OUT" RESET);
@@ -560,7 +580,7 @@ no:
         printf("\n");
         main();
     }
-    if (s == 6)
+    if (s == 7)
     {
         system("cls");
         FILE *check;
@@ -967,4 +987,75 @@ void std_marks()
     }
     fclose(mark);
     printf(GREEN "\nWeekly test marks recorded successfully!\n" RESET);
+}
+void section_routine()
+{
+    system("cls");
+    char section[10];
+    char days[5][15] = {"Saturday", "Sunday", "Monday", "Tuesday", "Wednesday"};
+    char files[5][20] = {"saturday.txt", "sunday.txt", "monday.txt", "tuesday.txt", "wednesday.txt"};
+    
+    printf(CYAN BOLD "=== SECTION WISE WEEKLY ROUTINE ===\n\n" RESET);
+    printf(YELLOW "Enter your section (1AM/1BM/1CM): " RESET);
+    scanf("%s", section);
+    
+    // Validate section input
+    if (strcmp(section, "1AM") != 0 && strcmp(section, "1BM") != 0 && strcmp(section, "1CM") != 0)
+    {
+        printf(RED "Invalid section! Please enter 1AM, 1BM, or 1CM.\n" RESET);
+        return;
+    }
+    
+    system("cls");
+    printf(MAGENTA BOLD "=== WEEKLY ROUTINE FOR SECTION %s ===\n\n" RESET, section);
+    
+    // Display routine for each day
+    for (int day = 0; day < 5; day++)
+    {
+        printf(CYAN BOLD "=== %s ===\n" RESET, days[day]);
+        
+        FILE *fp = fopen(files[day], "r");
+        if (!fp)
+        {
+            printf(RED "Could not open %s routine file.\n\n" RESET, days[day]);
+            continue;
+        }
+        
+        char line[256];
+        // 1st line skip korar jnno
+        fgets(line, sizeof(line), fp);
+        
+        int period = 1;
+        while (fgets(line, sizeof(line), fp))
+        {
+            line[strcspn(line, "\n")] = 0; // Remove newline
+            
+            // Split CSV line by semicolon
+            char *time = strtok(line, ";");
+            char *am = strtok(NULL, ";");
+            char *bm = strtok(NULL, ";");
+            char *cm = strtok(NULL, ";");
+            
+            if (time)
+            {
+                printf(YELLOW "Period %d - %s: " RESET, period, time);
+                
+                if (strcmp(section, "1AM") == 0 && am)
+                    printf(GREEN "%s\n" RESET, am);
+                else if (strcmp(section, "1BM") == 0 && bm)
+                    printf(GREEN "%s\n" RESET, bm);
+                else if (strcmp(section, "1CM") == 0 && cm)
+                    printf(GREEN "%s\n" RESET, cm);
+                else
+                    printf(MAGENTA "No class scheduled\n" RESET);
+                    
+                period++;
+            }
+        }
+        
+        fclose(fp);
+        printf("\n");
+    }
+    
+    printf(BLUE "=== End of Weekly Routine ===\n" RESET);
 }
