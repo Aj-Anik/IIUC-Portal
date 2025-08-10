@@ -84,9 +84,8 @@ int main()
     tm_info = localtime(&t);
 
     // Format: e.g., "Thursday, 07 August 2025"
-    strftime(buffer, sizeof(buffer), "%A, %d %B %Y", tm_info);
+    strftime(buffer, sizeof(buffer), "%A, %d %B %Y", tm_info)
 
-    // Optional color for date header
     printf("\033[1;34m%s\033[0m\n\n", buffer);
 
     printf(BLUE "** Press 1 for " RESET CYAN "Registration (Student)\n" RESET);
