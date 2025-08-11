@@ -84,7 +84,7 @@ int main()
     tm_info = localtime(&t);
 
     
-    strftime(buffer, sizeof(buffer), "%A, %d %B %Y", tm_info)
+    strftime(buffer, sizeof(buffer), "%A, %d %B %Y", tm_info);
 
     printf("\033[1;34m%s\033[0m\n\n", buffer);
 
